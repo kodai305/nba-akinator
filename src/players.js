@@ -1,0 +1,32 @@
+// 隠し選手プール（名前のみ）。属性は持たず、真偽判定はモデルの知識に任せる。
+// モデルが確実に知っている有名選手に絞る（ゲームを成立させるため）。
+export const PLAYERS = [
+  // レジェンド
+  "Michael Jordan", "Magic Johnson", "Larry Bird", "Kareem Abdul-Jabbar",
+  "Wilt Chamberlain", "Bill Russell", "Hakeem Olajuwon", "Shaquille O'Neal",
+  "Tim Duncan", "Kobe Bryant", "Allen Iverson", "Charles Barkley",
+  "Karl Malone", "John Stockton", "Scottie Pippen", "David Robinson",
+  "Patrick Ewing", "Dennis Rodman", "Reggie Miller", "Gary Payton",
+  "Isiah Thomas", "Dominique Wilkins", "Clyde Drexler", "Kevin Garnett",
+  "Dirk Nowitzki", "Steve Nash", "Jason Kidd", "Ray Allen",
+  "Paul Pierce", "Tracy McGrady", "Vince Carter", "Yao Ming",
+  "Tony Parker", "Manu Ginobili", "Pau Gasol", "Grant Hill",
+  "Dwyane Wade", "Carmelo Anthony", "Dwight Howard", "Blake Griffin",
+  // 現代〜現役
+  "LeBron James", "Stephen Curry", "Kevin Durant", "Kawhi Leonard",
+  "Giannis Antetokounmpo", "James Harden", "Russell Westbrook", "Chris Paul",
+  "Damian Lillard", "Klay Thompson", "Draymond Green", "Anthony Davis",
+  "Nikola Jokic", "Joel Embiid", "Luka Doncic", "Jimmy Butler",
+  "Paul George", "Kyrie Irving", "DeMar DeRozan", "Rudy Gobert",
+  "Jayson Tatum", "Jaylen Brown", "Devin Booker", "Donovan Mitchell",
+  "Trae Young", "Ja Morant", "Zion Williamson", "Karl-Anthony Towns",
+  "Kyle Lowry", "Al Horford", "Bam Adebayo", "Pascal Siakam",
+  "Domantas Sabonis", "Shai Gilgeous-Alexander", "Anthony Edwards",
+  "Tyrese Haliburton", "Jalen Brunson", "De'Aaron Fox", "Jaren Jackson Jr.",
+  "Victor Wembanyama", "Paolo Banchero", "Andre Iguodala", "Ben Simmons",
+];
+
+// index を渡して選手名を返す（乱数は呼び出し側で生成）
+export function pickPlayer(rand = Math.random()) {
+  return PLAYERS[Math.floor(rand * PLAYERS.length)];
+}
