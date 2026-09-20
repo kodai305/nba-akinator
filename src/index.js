@@ -1,10 +1,15 @@
 // スモークテスト用 Worker。
-// GET /smoke で typesafe/jev に既知のNBA事実を問い、知識精度を確認する。
+// 目的: (1) Worker→AIバインディングの疎通確認 (2) モデルのNBA知識精度の実測
+//
+//   GET /smoke            → 無料モデル(@cf/...) で実行（クレジット不要）
+//   GET /smoke?model=jev  → typesafe/jev で実行（AI Gatewayクレジットが必要）
+//
 // 本実装に入る前の検証専用。あとで丸ごと置き換える。
 
-const NOUL = (instructions, criteria) => ({ type: "noul", instructions, criteria });
+// 無料の第一党モデル（Neurons無料枠で動く）。知識が弱ければ 3.3-70b に上げる。
+const FREE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 
-// 各選手について「主張 → 期待するnoul(1に近い=真)」を並べる
+// 各選手について「主張 → 期待する真偽」
 const BATTERIES = {
   "Stephen Curry": [
     ["主にポイントガードとしてプレーする", true],
@@ -30,48 +35,59 @@ const BATTERIES = {
   ],
 };
 
-async function runBattery(env, player, items) {
+// ---- Jev バックエンド（typesafe/jev） ----
+async function runBatteryJev(env, player, items) {
   const questions = {};
   items.forEach(([claim], i) => {
-    questions["q" + i] = NOUL(
-      `state.player という NBA選手について、次の主張は正しいか: ${claim}`,
-      { true: "その主張は事実として正しい", false: "その主張は誤り、または当てはまらない" }
-    );
+    questions["q" + i] = {
+      type: "noul",
+      instructions: `state.player という NBA選手について、次の主張は正しいか: ${claim}`,
+      criteria: { true: "その主張は事実として正しい", false: "その主張は誤り、または当てはまらない" },
+    };
   });
-  // 追加: ポジションを Choice で当てられるか
-  questions.position = {
-    type: "choice",
-    instructions: "state.player という NBA選手の主なポジションはどれか",
-    criteria: {
-      PG: "ポイントガード",
-      SG: "シューティングガード",
-      SF: "スモールフォワード",
-      PF: "パワーフォワード",
-      C: "センター",
-    },
-  };
-
-  const res = await env.AI.run("typesafe/jev", { state: { player }, questions });
-
+  const opts = env.GATEWAY_ID ? { gateway: { id: env.GATEWAY_ID } } : undefined;
+  const res = await env.AI.run("typesafe/jev", { state: { player }, questions }, opts);
   const rows = items.map(([claim, expected], i) => {
     const noul = res.answers["q" + i]?.noul;
     const predicted = noul >= 0.5;
-    return {
-      claim,
-      expected,
-      noul: Math.round(noul * 100) / 100,
-      predicted,
-      ok: predicted === expected,
-    };
+    return { claim, expected, value: Math.round(noul * 100) / 100, predicted, ok: predicted === expected };
   });
-  const correct = rows.filter((r) => r.ok).length;
+  return { player, backend: "jev", score: `${rows.filter((r) => r.ok).length}/${rows.length}`, rows, usage: res.usage };
+}
+
+// ---- 無料モデルバックエンド（LLMにJSONで真偽を答えさせる） ----
+async function runBatteryFree(env, player, items) {
+  const numbered = items.map(([claim], i) => `${i}: ${claim}`).join("\n");
+  const sys =
+    "あなたはNBAの専門家です。与えられた選手について各主張の真偽を判定します。" +
+    '必ず次の形式の厳密なJSONだけを返してください: {"answers":[{"i":<番号>,"verdict":"yes"|"no"|"unsure"}]}。説明文は不要。';
+  const user = `選手: ${player}\n各主張が事実として正しいか判定してください。\n${numbered}`;
+  const res = await env.AI.run(FREE_MODEL, {
+    messages: [
+      { role: "system", content: sys },
+      { role: "user", content: user },
+    ],
+    max_tokens: 512,
+  });
+  const text = typeof res.response === "string" ? res.response : JSON.stringify(res.response ?? res);
+  let parsed = null;
+  try {
+    const m = text.match(/\{[\s\S]*\}/);
+    parsed = JSON.parse(m ? m[0] : text);
+  } catch (_) {}
+  const verdicts = {};
+  (parsed?.answers || []).forEach((a) => (verdicts[a.i] = a.verdict));
+  const rows = items.map(([claim, expected], i) => {
+    const v = verdicts[i];
+    const predicted = v === "yes" ? true : v === "no" ? false : null;
+    return { claim, expected, value: v ?? "?", predicted, ok: predicted === expected };
+  });
   return {
     player,
-    position: res.answers.position?.choice,
-    position_conf: res.answers.position?.confidence,
-    score: `${correct}/${rows.length}`,
+    backend: FREE_MODEL,
+    score: `${rows.filter((r) => r.ok).length}/${rows.length}`,
     rows,
-    usage: res.usage,
+    raw: parsed ? undefined : String(text).slice(0, 400), // パース失敗時のみ生テキストを出す
   };
 }
 
@@ -79,16 +95,17 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/smoke") {
+      const useJev = url.searchParams.get("model") === "jev";
       try {
         const results = [];
         for (const [player, items] of Object.entries(BATTERIES)) {
-          results.push(await runBattery(env, player, items));
+          results.push(useJev ? await runBatteryJev(env, player, items) : await runBatteryFree(env, player, items));
         }
-        return Response.json({ ok: true, results }, { headers: { "cache-control": "no-store" } });
+        return Response.json({ ok: true, mode: useJev ? "jev" : "free", results }, { headers: { "cache-control": "no-store" } });
       } catch (e) {
         return Response.json({ ok: false, error: String(e), stack: e?.stack }, { status: 500 });
       }
     }
-    return new Response("smoke test worker: GET /smoke", { status: 200 });
+    return new Response("smoke test worker: GET /smoke (add ?model=jev for typesafe/jev)", { status: 200 });
   },
 };

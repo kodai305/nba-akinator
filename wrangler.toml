@@ -5,3 +5,8 @@ compatibility_date = "2026-09-01"
 # Workers AI binding: env.AI.run("typesafe/jev", ...)
 [ai]
 binding = "AI"
+
+[vars]
+# パートナーモデル(typesafe/jev)をクレジット課金するための AI Gateway 名。
+# ダッシュボードで作成し、その Gateway の Workers AI Billing を Unified billing にする。
+GATEWAY_ID = "default"
