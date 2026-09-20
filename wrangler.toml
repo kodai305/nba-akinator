@@ -1,0 +1,7 @@
+name = "nba-akinator"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# Workers AI binding: env.AI.run("typesafe/jev", ...)
+[ai]
+binding = "AI"
