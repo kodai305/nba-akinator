@@ -2,6 +2,8 @@
 
 AI が NBA 選手を1人「隠し持ち」、ユーザーが Yes/No 質問を重ねて誰かを当てる Web ゲーム。
 
+**公開URL: https://nba-akinator.takagi-305216.workers.dev**
+
 ## 構成
 
 - **Cloudflare Workers** 単体でフロント配信と API を兼ねる。
