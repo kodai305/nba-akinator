@@ -475,7 +475,7 @@ export const HTML = `<!doctype html>
       lines.push(traceStr);
     }
     lines.push("#ballerdle  ballerdle.tkg216.org");
-    return lines.join("\n");
+    return lines.join("\\n");
   }
 
   function renderResult(win, answerName) {
