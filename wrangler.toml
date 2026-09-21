@@ -1,6 +1,13 @@
 name = "nba-akinator"
 main = "src/index.js"
 compatibility_date = "2026-09-01"
+workers_dev = true  # 旧URL(nba-akinator.*.workers.dev)も有効のまま残す
+
+# 独自ドメイン（Cloudflareゾーン tkg216.org のサブドメイン）。
+# deploy 時に DNS レコードと証明書が自動発行される。
+routes = [
+  { pattern = "ballerdle.tkg216.org", custom_domain = true }
+]
 
 # Workers AI binding: env.AI.run("typesafe/jev", ...)
 [ai]
