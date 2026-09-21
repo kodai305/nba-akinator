@@ -1,0 +1,36 @@
+name: Deploy
+
+# main にマージされたら本番(Cloudflare Workers)へ自動デプロイする。
+# 必要な設定:
+#   - Secret   CLOUDFLARE_API_TOKEN  … Cloudflareで発行した Workers 編集権限のトークン
+#   - Variable CLOUDFLARE_ACCOUNT_ID … Cloudflare のアカウントID
+# Worker側のSecret(TYPESAFE_API_KEY 等)は Cloudflare 上に保持され、deploy では消えない。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # デプロイ前に型チェック（壊れたものを本番に出さない）
+      - run: npx tsc --noEmit
+      - run: node --check public/app.js
+      - name: Deploy to Cloudflare Workers
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
