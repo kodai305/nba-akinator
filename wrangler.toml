@@ -7,6 +7,9 @@ compatibility_date = "2026-09-01"
 binding = "AI"
 
 [vars]
-# パートナーモデル(typesafe/jev)をクレジット課金するための AI Gateway 名。
-# ダッシュボードで作成し、その Gateway の Workers AI Billing を Unified billing にする。
-GATEWAY_ID = "default"
+# "jev" にすると typesafe.ai の Jev(Noul) を直接呼ぶ（要 TYPESAFE_API_KEY）。
+# 未設定/キー無しなら Cloudflare 無料モデルにフォールバック。
+BACKEND = "jev"
+# TYPESAFE_API_KEY は秘密情報:
+#   ローカル → .dev.vars (gitignore済み)
+#   本番     → wrangler secret put TYPESAFE_API_KEY

@@ -33,6 +33,13 @@ export const HTML = `<!doctype html>
   .ai .bubble { background: var(--panel2); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
   .verdict { font-weight: 700; }
   .verdict.yes { color: var(--yes); } .verdict.no { color: var(--no); } .verdict.maybe { color: var(--maybe); }
+  .gauge { margin-top: 8px; min-width: 180px; }
+  .gauge-track { position: relative; height: 8px; border-radius: 6px;
+    background: linear-gradient(90deg, var(--no), #6b7399 50%, var(--yes)); }
+  .gauge-marker { position: absolute; top: -3px; width: 3px; height: 14px; background: #fff;
+    border-radius: 2px; transform: translateX(-50%); box-shadow: 0 0 0 2px rgba(0,0,0,.35); }
+  .gauge-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .gauge-labels .pct { color: var(--text); font-weight: 700; }
   .sys { text-align: center; color: var(--muted); font-size: 12.5px; padding: 4px 0; }
 
   footer { padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--panel); }
@@ -153,7 +160,18 @@ export const HTML = `<!doctype html>
     }
   }
 
-  const verdictJa = { yes: '<span class="verdict yes">はい</span>', no: '<span class="verdict no">いいえ</span>', maybe: '<span class="verdict maybe">たぶん / どちらとも言えない</span>' };
+  const verdictJa = { yes: '<span class="verdict yes">はい</span>', no: '<span class="verdict no">いいえ</span>', maybe: '<span class="verdict maybe">どちらとも言えない</span>' };
+
+  function renderAnswer(d) {
+    const label = verdictJa[d.verdict] || verdictJa.maybe;
+    if (typeof d.noul !== "number") return label; // 較正値が無い場合はラベルのみ
+    const pct = Math.round(d.noul * 100);
+    return label +
+      '<div class="gauge">' +
+        '<div class="gauge-track"><div class="gauge-marker" style="left:' + pct + '%"></div></div>' +
+        '<div class="gauge-labels"><span>いいえ</span><span class="pct">Yes度 ' + pct + '%</span><span>はい</span></div>' +
+      '</div>';
+  }
 
   async function submit() {
     const val = input.value.trim();
@@ -166,7 +184,7 @@ export const HTML = `<!doctype html>
       if (mode === "ask") {
         const d = await api("/api/ask", { token, question: val });
         n++; count.textContent = n;
-        thinking.querySelector(".bubble").innerHTML = verdictJa[d.verdict] || verdictJa.maybe;
+        thinking.querySelector(".bubble").innerHTML = renderAnswer(d);
       } else {
         const d = await api("/api/guess", { token, guess: val });
         if (d.correct) {

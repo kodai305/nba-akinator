@@ -48,8 +48,8 @@ export default {
         if (pathname === "/api/ask") {
           const question = String(body.question || "").slice(0, 300);
           if (!question) return json({ error: "empty question" }, 400);
-          const { verdict } = await answerQuestion(env, player, question);
-          return json({ verdict });
+          const { verdict, noul } = await answerQuestion(env, player, question);
+          return json({ verdict, noul: typeof noul === "number" ? Math.round(noul * 1000) / 1000 : null });
         }
 
         if (pathname === "/api/guess") {
