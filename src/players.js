@@ -30,3 +30,19 @@ export const PLAYERS = [
 export function pickPlayer(rand = Math.random()) {
   return PLAYERS[Math.floor(rand * PLAYERS.length)];
 }
+
+// FNV-1a による簡易ハッシュ。配列順からの予測を避けるために日次選出で使う。
+export function hash(str) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+
+// 通し日数（dayNumber）から、その日の隠し選手を決定論的に選ぶ。
+// 全プレイヤーが同じ日に同じ選手を引く（Wordle 方式）。
+export function dailyPlayer(dayNumber) {
+  return PLAYERS[hash(String(dayNumber)) % PLAYERS.length];
+}

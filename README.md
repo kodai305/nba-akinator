@@ -1,15 +1,17 @@
-# NBA Akinator（逆アキネータ）
+# Ballerdle
 
-AI が NBA 選手を1人「隠し持ち」、ユーザーが Yes/No 質問を重ねて誰かを当てる Web ゲーム。
+毎日ひとり、NBA選手を当てる日次チャレンジ。Yes/No 質問を最大20問重ねて、AI が「隠し持つ」その日の選手を当てる Web ゲーム。
 
 **公開URL: https://nba-akinator.takagi-305216.workers.dev**
 
 ## 構成
 
 - **Cloudflare Workers** 単体でフロント配信と API を兼ねる。
-- 推論は **Cloudflare Workers AI の [`typesafe/jev`](https://developers.cloudflare.com/ai/models/typesafe/jev/)**（TypeSafe の Jev モデル）を `env.AI.run` で利用。typesafe.ai の別 API キーは不要（課金は Cloudflare 経由）。
-  - ユーザーの質問は Jev の **Noul**（真偽の確率）で評価し、はい / いいえ / たぶん にマッピング。
-- **隠し選手**はサーバ側で名前プールからランダム選択し、AES-GCM（WebCrypto）で暗号化したトークンとしてクライアントに保持させる（KV 不要のステートレス構成、DevTools からは答えが読めない）。
+- 推論は `BACKEND=jev` かつ `TYPESAFE_API_KEY`（Worker Secret）設定時、**typesafe.ai の REST API を直接呼び出す**（`POST https://api.typesafe.ai/v1/systemone`, `model: "jev-latest"`）。ユーザーの質問は Jev の **Noul**（真偽の確率）で評価し、はい / いいえ / たぶん にマッピング。
+  - `BACKEND` 未設定 or `TYPESAFE_API_KEY` 未設定時は **Cloudflare Workers AI の無料モデル `@cf/meta/llama-3.3-70b-instruct-fp8-fast`**（`env.AI.run`）にフォールバック（較正済み確率が無いためゲージは非表示）。
+- **その日の隠し選手**は JST基準の通し日数から決定論的に選出（`src/daily.js`）。全員が同じ日に同じ選手を引く（Wordle方式）。選手名はサーバ内でのみ算出し、正解/降参時以外はレスポンスに含めない。トークンやKVは不要なステートレス構成。
+- 同じ質問/推測の重複呼び出しは Cache API（`caches.default`）で1日キャッシュし、Jev 呼び出しを節約する。
+- 進捗（質問ログ・残数・勝敗）とストリークはクライアントの `localStorage` に保存し、1日1回のプレイを担保する。
 
 ## 開発
 

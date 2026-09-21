@@ -1,7 +1,8 @@
-// NBA逆アキネータ — Cloudflare Worker（フロント配信 + API）。
+// Ballerdle — Cloudflare Worker（フロント配信 + API）。
+// 毎日ひとり、NBA選手を当てる日次チャレンジ。選手はJST基準で決定論的に選出され、
+// 正解/降参時以外はレスポンスに絶対含めない。
 import { HTML } from "./ui.js";
-import { pickPlayer } from "./players.js";
-import { seal, open } from "./crypto.js";
+import { getDaily } from "./daily.js";
 import { answerQuestion, checkGuess } from "./ai.js";
 
 const json = (obj, status = 200) =>
@@ -18,8 +19,13 @@ async function readBody(request) {
   }
 }
 
+// trim→小文字化→連続空白を1つに。
+function normalize(s) {
+  return String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const { pathname } = url;
 
@@ -27,36 +33,53 @@ export default {
       return new Response(HTML, { headers: { "content-type": "text/html; charset=utf-8" } });
     }
 
+    if (request.method === "GET" && pathname === "/api/today") {
+      const { number, date } = getDaily();
+      return json({ number, date });
+    }
+
     if (request.method === "POST" && pathname.startsWith("/api/")) {
       try {
-        if (pathname === "/api/new") {
-          const player = pickPlayer(crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32);
-          const token = await seal(env, { p: player, t: Date.now() });
-          return json({ token });
-        }
-
+        const { player, date } = getDaily();
         const body = await readBody(request);
-        if (!body.token) return json({ error: "missing token" }, 400);
-        let state;
-        try {
-          state = await open(env, body.token);
-        } catch {
-          return json({ error: "invalid token" }, 400);
-        }
-        const player = state.p;
+        const cache = caches.default;
 
         if (pathname === "/api/ask") {
           const question = String(body.question || "").slice(0, 300);
           if (!question) return json({ error: "empty question" }, 400);
+
+          const cacheKey = new Request(
+            `https://cache.ballerdle/q?d=${date}&q=${encodeURIComponent(normalize(question))}`,
+          );
+          const cached = await cache.match(cacheKey);
+          if (cached) return cached;
+
           const { verdict, noul } = await answerQuestion(env, player, question);
-          return json({ verdict, noul: typeof noul === "number" ? Math.round(noul * 1000) / 1000 : null });
+          const payload = { verdict, noul: typeof noul === "number" ? Math.round(noul * 1000) / 1000 : null };
+          const cacheable = new Response(JSON.stringify(payload), {
+            headers: { "content-type": "application/json", "cache-control": "max-age=86400" },
+          });
+          ctx.waitUntil(cache.put(cacheKey, cacheable.clone()));
+          return cacheable;
         }
 
         if (pathname === "/api/guess") {
           const guess = String(body.guess || "").slice(0, 120);
           if (!guess) return json({ error: "empty guess" }, 400);
+
+          const cacheKey = new Request(
+            `https://cache.ballerdle/g?d=${date}&q=${encodeURIComponent(normalize(guess))}`,
+          );
+          const cached = await cache.match(cacheKey);
+          if (cached) return cached;
+
           const { correct } = await checkGuess(env, player, guess);
-          return json(correct ? { correct: true, answer: player } : { correct: false });
+          const payload = correct ? { correct: true, answer: player } : { correct: false };
+          const cacheable = new Response(JSON.stringify(payload), {
+            headers: { "content-type": "application/json", "cache-control": "max-age=86400" },
+          });
+          ctx.waitUntil(cache.put(cacheKey, cacheable.clone()));
+          return cacheable;
         }
 
         if (pathname === "/api/giveup") {
