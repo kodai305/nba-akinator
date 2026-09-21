@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    name: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Worker(TypeScript)の型チェック
+      - run: npx tsc --noEmit
+      # ブラウザJSの構文チェック（過去に構文エラーで本番が壊れたため）
+      - run: node --check public/app.js
+      # 静的アセットの参照先が実在するか
+      - name: check static assets exist
+        run: |
+          test -f public/index.html
+          test -f public/styles.css
+          test -f public/app.js
+          test -f public/og.png
