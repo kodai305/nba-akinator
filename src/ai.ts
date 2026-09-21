@@ -1,15 +1,24 @@
 // 真偽判定の抽象化。
 //   BACKEND === "jev" かつ TYPESAFE_API_KEY あり → typesafe.ai の Jev(Noul) を直接呼ぶ
 //   それ以外 → Cloudflare 無料モデル（クレジット不要）
+import type { Env } from "./index";
 
 const FREE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 
-function useJev(env) {
+type Verdict = "yes" | "no" | "maybe";
+
+function useJev(env: Env): boolean {
   return env.BACKEND === "jev" && !!env.TYPESAFE_API_KEY;
 }
 
+type SystemOneAnswers = Record<string, { noul?: number } | undefined>;
+
 // typesafe.ai の System One API を直接叩く。answers を返す。
-async function jevSystemOne(env, state, questions) {
+async function jevSystemOne(
+  env: Env,
+  state: Record<string, unknown>,
+  questions: Record<string, unknown>,
+): Promise<SystemOneAnswers> {
   const base = env.TYPESAFE_BASE_URL || "https://api.typesafe.ai/v1";
   const res = await fetch(`${base}/systemone`, {
     method: "POST",
@@ -23,11 +32,11 @@ async function jevSystemOne(env, state, questions) {
     const detail = await res.text();
     throw new Error(`typesafe ${res.status}: ${detail.slice(0, 200)}`);
   }
-  const data = await res.json();
+  const data = (await res.json()) as { answers?: SystemOneAnswers };
   return data.answers || {};
 }
 
-function extractJson(text) {
+function extractJson(text: unknown): any {
   const s = typeof text === "string" ? text : JSON.stringify(text ?? "");
   try {
     const m = s.match(/\{[\s\S]*\}/);
@@ -37,14 +46,16 @@ function extractJson(text) {
   }
 }
 
-function noulToVerdict(noul) {
+function noulToVerdict(noul: number): Verdict {
   if (noul >= 0.66) return "yes";
   if (noul <= 0.34) return "no";
   return "maybe";
 }
 
+export type AnswerResult = { verdict: Verdict; noul: number | null };
+
 // ユーザーの質問に対する、隠し選手についての答えを yes / no / maybe で返す。
-export async function answerQuestion(env, player, question) {
+export async function answerQuestion(env: Env, player: string, question: string): Promise<AnswerResult> {
   if (useJev(env)) {
     const answers = await jevSystemOne(
       env,
@@ -73,14 +84,14 @@ export async function answerQuestion(env, player, question) {
     '出力は厳密なJSONのみ: {"verdict":"yes"|"no"|"maybe"}。' +
     "事実として正しければ yes、誤りなら no、Yes/Noで断定できない・情報が曖昧・質問がYes/No形式でないなら maybe。";
   const user = `隠し選手: ${player}\nユーザーの質問: ${question}`;
-  const res = await env.AI.run(FREE_MODEL, {
+  const res: any = await env.AI.run(FREE_MODEL as any, {
     messages: [
       { role: "system", content: sys },
       { role: "user", content: user },
     ],
     max_tokens: 64,
     temperature: 0,
-  });
+  } as any);
   const parsed = extractJson(res.response);
   let verdict = parsed?.verdict;
   if (!["yes", "no", "maybe"].includes(verdict)) verdict = "maybe";
@@ -88,8 +99,10 @@ export async function answerQuestion(env, player, question) {
   return { verdict, noul: null };
 }
 
+export type GuessResult = { correct: boolean };
+
 // 推測名が隠し選手と同一人物か判定。{ correct: boolean } を返す。
-export async function checkGuess(env, player, guess) {
+export async function checkGuess(env: Env, player: string, guess: string): Promise<GuessResult> {
   if (useJev(env)) {
     const answers = await jevSystemOne(
       env,
@@ -111,14 +124,14 @@ export async function checkGuess(env, player, guess) {
     "愛称・スペル違い・日本語/英語表記の違いは同一とみなします。" +
     '出力は厳密なJSONのみ: {"same": true|false}。';
   const user = `名前A(正解): ${player}\n名前B(ユーザーの推測): ${guess}`;
-  const res = await env.AI.run(FREE_MODEL, {
+  const res: any = await env.AI.run(FREE_MODEL as any, {
     messages: [
       { role: "system", content: sys },
       { role: "user", content: user },
     ],
     max_tokens: 32,
     temperature: 0,
-  });
+  } as any);
   const parsed = extractJson(res.response);
   return { correct: parsed?.same === true };
 }

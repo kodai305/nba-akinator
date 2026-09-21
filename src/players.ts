@@ -1,6 +1,6 @@
 // 隠し選手プール（名前のみ）。属性は持たず、真偽判定はモデルの知識に任せる。
 // モデルが確実に知っている有名選手に絞る（ゲームを成立させるため）。
-export const PLAYERS = [
+export const PLAYERS: string[] = [
   // レジェンド
   "Michael Jordan", "Magic Johnson", "Larry Bird", "Kareem Abdul-Jabbar",
   "Wilt Chamberlain", "Bill Russell", "Hakeem Olajuwon", "Shaquille O'Neal",
@@ -27,12 +27,12 @@ export const PLAYERS = [
 ];
 
 // index を渡して選手名を返す（乱数は呼び出し側で生成）
-export function pickPlayer(rand = Math.random()) {
+export function pickPlayer(rand: number = Math.random()): string {
   return PLAYERS[Math.floor(rand * PLAYERS.length)];
 }
 
 // FNV-1a による簡易ハッシュ。配列順からの予測を避けるために日次選出で使う。
-export function hash(str) {
+export function hash(str: string): number {
   let h = 0x811c9dc5;
   for (let i = 0; i < str.length; i++) {
     h ^= str.charCodeAt(i);
@@ -43,6 +43,6 @@ export function hash(str) {
 
 // 通し日数（dayNumber）から、その日の隠し選手を決定論的に選ぶ。
 // 全プレイヤーが同じ日に同じ選手を引く（Wordle 方式）。
-export function dailyPlayer(dayNumber) {
+export function dailyPlayer(dayNumber: number): string {
   return PLAYERS[hash(String(dayNumber)) % PLAYERS.length];
 }
