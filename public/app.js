@@ -228,6 +228,7 @@
     $("resultTitle").textContent = win ? "せいかい！🎉" : ("残念！正解は " + answerName);
     $("resultName").textContent = win ? answerName : "";
     $("resultName").style.display = win ? "" : "none";
+    $("stamp").textContent = "🎯 ズバリ！";
     $("stamp").style.display = win ? "inline-block" : "none";
     $("traceRow").textContent = renderedTrace(win);
     const descParts = [];
@@ -364,6 +365,12 @@
     try { document.execCommand("copy"); } catch (e) {}
     document.body.removeChild(ta);
   }
+
+  // 結果カードの文言は静的HTMLに置かず実行時に入れる。
+  // LINE等のクローラはCSSを実行しないため、HTMLに書くとリンクプレビューの
+  // 説明文に「せいかい！ズバリ！…」が拾われてしまう。
+  $("shareX").textContent = "𝕏でシェア";
+  $("shareCopy").textContent = "コピー";
 
   $("shareX").onclick = () => {
     window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareTextCache), "_blank");

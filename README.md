@@ -1,8 +1,10 @@
 # Ballerdle
 
+![Ballerdle — 毎日ひとり、NBA選手を当てる](public/og.png)
+
 毎日ひとり、NBA選手を当てる日次チャレンジ。Yes/No 質問を最大20問重ねて、AI が「隠し持つ」その日の選手を当てる Web ゲーム。
 
-**公開URL: https://nba-akinator.takagi-305216.workers.dev**
+**▶ 遊ぶ: https://ballerdle.tkg216.org**
 
 ## 構成
 

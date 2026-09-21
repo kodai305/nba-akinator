@@ -50,15 +50,18 @@
 <div class="overlay" id="overlay">
   <canvas id="confetti"></canvas>
   <div class="card">
-    <div class="card-emoji" id="cardEmoji">🎉</div>
-    <h2 id="resultTitle">せいかい！</h2>
+    <!-- 結果カードの文言は app.js が実行時に入れる。
+         静的HTMLに書くと、CSSを実行しないクローラ（LINE等）が本文テキストを
+         拾ってリンクプレビューの説明文にしてしまうため。 -->
+    <div class="card-emoji" id="cardEmoji"></div>
+    <h2 id="resultTitle"></h2>
     <div class="name" id="resultName"></div>
-    <div class="stamp" id="stamp" style="display:none">🎯 ズバリ！</div>
+    <div class="stamp" id="stamp" style="display:none"></div>
     <div class="trace-row" id="traceRow"></div>
     <p id="resultDesc"></p>
     <div class="share-row">
-      <button id="shareX" class="btn btn-blue" type="button">𝕏でシェア</button>
-      <button id="shareCopy" class="btn btn-orange" type="button">コピー</button>
+      <button id="shareX" class="btn btn-blue" type="button"></button>
+      <button id="shareCopy" class="btn btn-orange" type="button"></button>
     </div>
     <p class="countdown" id="countdown"></p>
   </div>
