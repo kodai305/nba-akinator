@@ -71,6 +71,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0, help="先頭N人だけ取得（動作確認用）")
     ap.add_argument("--sleep", type=float, default=0.8, help="リクエスト間のスリープ秒")
+    ap.add_argument("--refresh", action="store_true",
+                    help="既存データも含めて全員取り直す（既定は未取得の選手だけ）")
     args = ap.parse_args()
 
     try:
@@ -89,12 +91,34 @@ def main():
     for p in index:
         by_norm.setdefault(norm(p["full_name"]), []).append(p)
 
+    def find(name: str) -> list[dict]:
+        """完全一致 → 前方一致（"Jimmy Butler" ↔ "Jimmy Butler III" 等の接尾辞差を吸収）。"""
+        key = norm(name)
+        if key in by_norm:
+            return by_norm[key]
+        hits = [p for k, v in by_norm.items() if k.startswith(key) for p in v]
+        if not hits:
+            hits = [p for k, v in by_norm.items() if key in k for p in v]
+        if len(hits) > 1:
+            print(f"      ! 候補が複数: {[p['full_name'] for p in hits][:4]} → 先頭を採用")
+        return hits
+
+    # 既存データとマージし、未取得の選手だけ取りに行く（--refresh で全件取り直し）
     out: dict[str, dict] = {}
+    if OUT.exists() and not args.refresh:
+        try:
+            out = json.loads(OUT.read_text(encoding="utf-8")).get("players", {})
+            print(f"既存データ {len(out)} 名を読み込み（未取得分のみ取得します）\n")
+        except Exception as e:
+            print(f"既存データの読み込みに失敗（無視して新規取得）: {e}\n")
+
     unmatched: list[str] = []
     failed: list[tuple[str, str]] = []
 
     for i, name in enumerate(pool, 1):
-        cands = by_norm.get(norm(name), [])
+        if name in out and not args.refresh:
+            continue
+        cands = find(name)
         if not cands:
             print(f"[{i:>3}/{len(pool)}] {name:<26} ✗ NBA選手IDが見つかりません")
             unmatched.append(name)
