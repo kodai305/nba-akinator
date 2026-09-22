@@ -2,6 +2,7 @@
 //   BACKEND === "jev" かつ TYPESAFE_API_KEY あり → typesafe.ai の Jev(Noul) を直接呼ぶ
 //   それ以外 → Cloudflare 無料モデル（クレジット不要）
 import type { Env } from "./index";
+import { getFacts, FACTS_AS_OF_DATE, type PlayerRecord } from "./facts";
 
 const FREE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 
@@ -151,6 +152,27 @@ function getDefaultCache(): Cache | null {
   }
 }
 
+// --- ファクトの付与 ---
+// data/players.json にファクトがある選手のみ、Jev の state.記録 に NBA公式記録を渡す。
+// 「身長の閾値比較」「在籍年代レンジ」のような、モデルの一般知識だけでは誤答しやすい判定を
+// 事実ベースで正しく行わせるための補強（ファクトが無い選手は従来どおり）。
+const FACTS_INSTRUCTION_PREFIX =
+  "state.記録 はNBA公式の記録である。判断が state.記録 から決まる場合は、必ずそれを根拠にすること" +
+  "（例: 身長の比較、在籍年代の判定、受賞回数）。";
+const FACTS_INSTRUCTION_SUFFIX =
+  "state.記録 に無い事柄は、一般的な知識で判断してよい。" +
+  "state.記録の基準日 より後の出来事は反映されていない可能性がある。";
+
+function buildJevState(player: string, facts: PlayerRecord | null): Record<string, unknown> {
+  if (!facts) return { player };
+  return { player, 記録: facts, 記録の基準日: FACTS_AS_OF_DATE };
+}
+
+function buildJevInstructions(claim: string, hasFacts: boolean): string {
+  if (!hasFacts) return claim;
+  return `${FACTS_INSTRUCTION_PREFIX}\n${claim}\n${FACTS_INSTRUCTION_SUFFIX}`;
+}
+
 // 質問の正規化は選手に依存しないため、7日キャッシュする。
 export async function normalizeQuestion(
   env: Env,
@@ -223,13 +245,14 @@ export async function answerQuestion(
     const normalized = await normalizeQuestion(env, question, ctx).catch(() => null);
     if (normalized) {
       try {
+        const facts = getFacts(player);
         const answers = await jevSystemOne(
           env,
-          { player },
+          buildJevState(player, facts),
           {
             yes: {
               type: "noul",
-              instructions: normalized.claim,
+              instructions: buildJevInstructions(normalized.claim, !!facts),
               criteria: { true: normalized.whenTrue, false: normalized.whenFalse },
             },
           },
@@ -315,6 +338,7 @@ export type DebugAnswerResult = {
   noul: number | null;
   verdict: Verdict;
   normalized: boolean;
+  factsUsed: boolean;
 };
 
 export async function debugAnswerQuestion(
@@ -329,13 +353,14 @@ export async function debugAnswerQuestion(
 
   const normalized = await normalizeQuestion(env, question, ctx).catch(() => null);
   if (normalized) {
+    const facts = getFacts(player);
     const answers = await jevSystemOne(
       env,
-      { player },
+      buildJevState(player, facts),
       {
         yes: {
           type: "noul",
-          instructions: normalized.claim,
+          instructions: buildJevInstructions(normalized.claim, !!facts),
           criteria: { true: normalized.whenTrue, false: normalized.whenFalse },
         },
       },
@@ -348,6 +373,7 @@ export async function debugAnswerQuestion(
       noul,
       verdict: noulToVerdict(noul),
       normalized: true,
+      factsUsed: !!facts,
     };
   }
 
@@ -360,5 +386,6 @@ export async function debugAnswerQuestion(
     noul: legacy.noul,
     verdict: legacy.verdict,
     normalized: false,
+    factsUsed: false,
   };
 }
