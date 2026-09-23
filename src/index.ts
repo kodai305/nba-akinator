@@ -53,7 +53,7 @@ app.post("/api/ask", async (c) => {
     const cached = await cache.match(cacheKey);
     if (cached) return cached;
 
-    const { verdict, noul } = await answerQuestion(c.env, player, question, c.executionCtx);
+    const { verdict, noul } = await answerQuestion(c.env, player, question);
     const payload = { verdict, noul: typeof noul === "number" ? Math.round(noul * 1000) / 1000 : null };
     const cacheable = new Response(JSON.stringify(payload), {
       headers: { "content-type": "application/json", "cache-control": "max-age=86400" },
@@ -111,7 +111,7 @@ app.post("/api/_debug/ask", async (c) => {
     const question = String(body.question || "").slice(0, 300);
     if (!player || !question) return c.json({ error: "player and question are required" }, 400);
 
-    const result = await debugAnswerQuestion(c.env, player, question, c.executionCtx);
+    const result = await debugAnswerQuestion(c.env, player, question);
     return c.json(result);
   } catch (e) {
     return c.json({ error: "server error", detail: String(e) }, 500);
