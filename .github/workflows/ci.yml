@@ -20,6 +20,9 @@ jobs:
       - run: npx tsc --noEmit
       # ブラウザJSの構文チェック（過去に構文エラーで本番が壊れたため）
       - run: node --check public/app.js
+      # 生成スクリプトの構文チェック。実行はしない（OGP生成は macOS のフォントに依存し
+      # Linux では日本語が豆腐化するため、CIで再生成しても正しい出力にならない）
+      - run: node --check scripts/make-og.mjs
       # 静的アセットの参照先が実在するか
       - name: check static assets exist
         run: |
