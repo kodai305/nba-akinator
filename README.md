@@ -28,12 +28,13 @@ npm run typecheck       # tsc --noEmit
 
 ## スクリプト
 
-いずれも**生成物をコミットする**運用。実行環境に制約があるので注意。
+`fetch-facts.py` / `make-og.mjs` は**生成物をコミットする**運用。`bench/run.ts` は計測のみで生成物はコミットしない。実行環境に制約があるので注意。
 
 | スクリプト | 用途 | 実行環境の制約 |
 |---|---|---|
 | `scripts/fetch-facts.py` | NBA公式（nba_api）から選手ファクトを取得し `data/players.json` を生成 | **住宅回線のローカルのみ**。`stats.nba.com` は Akamai の bot 判定によりクラウドIP・CIからは到達できない |
 | `scripts/make-og.mjs` | OGP画像 `public/og.png`(1200x630) を生成 | **macOS のみ**。日本語描画に `Hiragino Sans` を使うため Linux では豆腐化する。CIでは構文チェックのみ行い実行しない |
+| `scripts/bench/run.ts` | 判定精度のベンチ（`src/ai.ts` の `answerQuestion` を直接呼び、141件の正解データで正答率を測る） | `TYPESAFE_API_KEY` が必要。Jev を約141回呼ぶため少額の課金が発生する |
 
 ```bash
 # 選手ファクトの再取得
@@ -41,7 +42,12 @@ uv run --python 3.12 --with nba_api python scripts/fetch-facts.py
 
 # OGP画像の再生成（macOS）
 node scripts/make-og.mjs
+
+# 判定精度ベンチ（TYPESAFE_API_KEY が必要）
+npm run bench
 ```
+
+判定ロジック・プロンプト（`src/ai.ts`）・選手データ（`data/players.json`）を変える PR では、変更前後で `npm run bench` を実行し、結果（正答率・誤答一覧）を PR に貼る運用とする。手動でベンチだけ回したい場合は Actions から `Accuracy bench` → `Run workflow`。
 
 ## デプロイ
 
