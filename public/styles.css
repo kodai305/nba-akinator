@@ -15,6 +15,10 @@
     --muted: #a8a29a;
   }
   * { box-sizing: border-box; }
+  /* 中央寄せは .app の margin:auto だけで行う。body を flex + justify-content:center にすると、
+     .app が画面より広くなった瞬間にはみ出しが左右均等に振られ、左側が座標マイナスに出て
+     スクロールでも届かなくなる（Android の X アプリ内ブラウザで左半分が見切れた）。 */
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   html, body { overflow-x: hidden; }
   body {
     margin: 0;
@@ -24,8 +28,6 @@
     color: var(--text);
     font-family: "M PLUS Rounded 1c", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
     min-height: 100dvh;
-    display: flex;
-    justify-content: center;
   }
   .app {
     width: 100%;
