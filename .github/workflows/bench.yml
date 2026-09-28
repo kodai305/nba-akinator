@@ -1,0 +1,33 @@
+name: Accuracy bench
+
+# 判定精度ベンチマーク（scripts/bench/run.ts）。手動実行のみ。
+# PRごとには回さない: Jev(typesafe.ai) を約141回呼ぶため課金が発生し、
+# 外部APIの可用性にも依存するため、CIの必須ゲートにはしない。
+#
+# 必要な設定:
+#   - Secret TYPESAFE_API_KEY … typesafe.ai の API キー
+on:
+  workflow_dispatch:
+
+jobs:
+  bench:
+    name: bench
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Check TYPESAFE_API_KEY is set
+        run: |
+          if [ -z "${TYPESAFE_API_KEY}" ]; then
+            echo "::error::Secret TYPESAFE_API_KEY が未設定です。リポジトリの Settings > Secrets に登録してください。"
+            exit 1
+          fi
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+      - run: npm run bench -- --min 0.97
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}

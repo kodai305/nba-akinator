@@ -1,0 +1,848 @@
+[
+  {
+    "player": "Michael Jordan",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Michael Jordan",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Michael Jordan",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Michael Jordan",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Michael Jordan",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Michael Jordan",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Michael Jordan",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Michael Jordan",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Shaquille O'Neal",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Shaquille O'Neal",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Shaquille O'Neal",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Shaquille O'Neal",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Shaquille O'Neal",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Shaquille O'Neal",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Shaquille O'Neal",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Shaquille O'Neal",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kobe Bryant",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kobe Bryant",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Kobe Bryant",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kobe Bryant",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Kobe Bryant",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kobe Bryant",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kobe Bryant",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kobe Bryant",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dwyane Wade",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dwyane Wade",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Dwyane Wade",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dwyane Wade",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Dwyane Wade",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dwyane Wade",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "no"
+  },
+  {
+    "player": "Dwyane Wade",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "no"
+  },
+  {
+    "player": "Dwyane Wade",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Allen Iverson",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Allen Iverson",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Allen Iverson",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Allen Iverson",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Allen Iverson",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "no"
+  },
+  {
+    "player": "Allen Iverson",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Allen Iverson",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Allen Iverson",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Charles Barkley",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Charles Barkley",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Charles Barkley",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Charles Barkley",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Charles Barkley",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "no"
+  },
+  {
+    "player": "Charles Barkley",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Charles Barkley",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Charles Barkley",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Tim Duncan",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Tim Duncan",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Tim Duncan",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Tim Duncan",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Tim Duncan",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Tim Duncan",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Hakeem Olajuwon",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Hakeem Olajuwon",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Hakeem Olajuwon",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Hakeem Olajuwon",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Hakeem Olajuwon",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Hakeem Olajuwon",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Hakeem Olajuwon",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Hakeem Olajuwon",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Larry Bird",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Larry Bird",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Larry Bird",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Larry Bird",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Larry Bird",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Larry Bird",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Larry Bird",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Larry Bird",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Magic Johnson",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Magic Johnson",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Magic Johnson",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Magic Johnson",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Magic Johnson",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Magic Johnson",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Magic Johnson",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Magic Johnson",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kareem Abdul-Jabbar",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Kareem Abdul-Jabbar",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kareem Abdul-Jabbar",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kareem Abdul-Jabbar",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kareem Abdul-Jabbar",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kareem Abdul-Jabbar",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Kareem Abdul-Jabbar",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "no"
+  },
+  {
+    "player": "Kareem Abdul-Jabbar",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dirk Nowitzki",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Dirk Nowitzki",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Dirk Nowitzki",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Dirk Nowitzki",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dirk Nowitzki",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dirk Nowitzki",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dirk Nowitzki",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Dirk Nowitzki",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Yao Ming",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Yao Ming",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Yao Ming",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Yao Ming",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Yao Ming",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "no"
+  },
+  {
+    "player": "Yao Ming",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "no"
+  },
+  {
+    "player": "Yao Ming",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "no"
+  },
+  {
+    "player": "Yao Ming",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Reggie Miller",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Reggie Miller",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Reggie Miller",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Reggie Miller",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Reggie Miller",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "no"
+  },
+  {
+    "player": "Reggie Miller",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "no"
+  },
+  {
+    "player": "Reggie Miller",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Reggie Miller",
+    "key": "retired",
+    "question": "すでに引退していますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Stephen Curry",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Stephen Curry",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Stephen Curry",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Stephen Curry",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Stephen Curry",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Stephen Curry",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Stephen Curry",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "no"
+  },
+  {
+    "player": "Nikola Jokic",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Nikola Jokic",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Nikola Jokic",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Nikola Jokic",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Nikola Jokic",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Nikola Jokic",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Nikola Jokic",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "no"
+  },
+  {
+    "player": "Giannis Antetokounmpo",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Giannis Antetokounmpo",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Giannis Antetokounmpo",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Giannis Antetokounmpo",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Giannis Antetokounmpo",
+    "key": "ring",
+    "question": "NBA優勝経験がありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Giannis Antetokounmpo",
+    "key": "mvp",
+    "question": "レギュラーシーズンMVPを受賞したことがありますか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Giannis Antetokounmpo",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "no"
+  },
+  {
+    "player": "Luka Doncic",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Luka Doncic",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Luka Doncic",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Luka Doncic",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Luka Doncic",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "no"
+  },
+  {
+    "player": "Victor Wembanyama",
+    "key": "guard",
+    "question": "ガードですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Victor Wembanyama",
+    "key": "center",
+    "question": "センターですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Victor Wembanyama",
+    "key": "usa",
+    "question": "アメリカ出身ですか？",
+    "expected": "no"
+  },
+  {
+    "player": "Victor Wembanyama",
+    "key": "tall210",
+    "question": "身長は210cm以上ですか？",
+    "expected": "yes"
+  },
+  {
+    "player": "Victor Wembanyama",
+    "key": "played90s",
+    "question": "1990年代にNBAでプレーしましたか？",
+    "expected": "no"
+  }
+]
